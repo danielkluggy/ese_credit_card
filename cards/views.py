@@ -4,8 +4,10 @@ from django.views import View
 from .models import validate_card_data
 from django.core.exceptions import ValidationError
 from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime
 
+@csrf_exempt
 class AddCardView(View):
     def post(self, request):
         data = json.loads(request.body)
@@ -35,6 +37,7 @@ class AddCardView(View):
         settings.MONGO_DB.cards.insert_one(card_data)
         return JsonResponse({"message": "Cartão adicionado com sucesso!"}, status=201)
 
+@csrf_exempt
 class GetValidCardsView(View):
     def get(self, request, client_id):
         current_year = datetime.now().year % 100
@@ -51,6 +54,7 @@ class GetValidCardsView(View):
 
         return JsonResponse({"valid_cards": cards}, status=200)
 
+@csrf_exempt
 class GetCardDetailsView(View):
     def get(self, request, client_id, number):
         card = settings.MONGO_DB.cards.find_one({
