@@ -1,9 +1,11 @@
 services:
-  credit_card:
-    build: .credit_card/
-    command: python manage.py runserver 0.0.0.0:8081
+  api:
+    container_name: esecreditcard
+    build:
+      context: .
+    command: python manage.py runserver 0.0.0.0:8083
     ports:
-      - "8081:8080"
+      - "8083:8083"
     volumes:
       - .:/app
     networks:
@@ -13,4 +15,5 @@ services:
 
 networks:
   eseklugdorow:
+    name: eseklugdorow
     external: true

@@ -28,7 +28,7 @@ SECRET_KEY = "django-insecure-$s)kn1*!#@q!i98w*(*35pjsft0k&i6r7-f(5xn)pl1*w8+gyd
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', '0.0.0.0', 'localhost','esecreditcard']
 
 # Application definition
 
@@ -39,6 +39,25 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    'drf_spectacular',
+    'drf_spectacular_sidecar',
+]
+
+REST_FRAMEWORK = {
+    # YOUR SETTINGS
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Your Project API',
+    'DESCRIPTION': 'Your project description',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    # OTHER SETTINGS
+}
+
+TEMPLATE_LOADERS = [
+    'django.template.loaders.eggs.Loader',
 ]
 
 MIDDLEWARE = [
