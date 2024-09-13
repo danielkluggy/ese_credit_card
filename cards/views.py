@@ -1,14 +1,15 @@
 import json
 from django.http import JsonResponse
-from django.views import View
 from .models import validate_card_data
 from django.core.exceptions import ValidationError
 from django.conf import settings
+from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.views import APIView
 from datetime import datetime
 
-@csrf_exempt
-class AddCardView(View):
+@method_decorator(csrf_exempt, name='dispatch')
+class AddCardView(APIView):
     def post(self, request):
         data = json.loads(request.body)
 
@@ -37,8 +38,8 @@ class AddCardView(View):
         settings.MONGO_DB.cards.insert_one(card_data)
         return JsonResponse({"message": "Cartão adicionado com sucesso!"}, status=201)
 
-@csrf_exempt
-class GetValidCardsView(View):
+@method_decorator(csrf_exempt, name='dispatch')
+class GetValidCardsView(APIView):
     def get(self, request, client_id):
         current_year = datetime.now().year % 100
         current_month = datetime.now().month
@@ -54,8 +55,8 @@ class GetValidCardsView(View):
 
         return JsonResponse({"valid_cards": cards}, status=200)
 
-@csrf_exempt
-class GetCardDetailsView(View):
+@method_decorator(csrf_exempt, name='dispatch')
+class GetCardDetailsView(APIView):
     def get(self, request, client_id, number):
         card = settings.MONGO_DB.cards.find_one({
             "client_id": client_id,
